@@ -123,6 +123,11 @@ const galaxyRenderer = new GalaxyRenderer(galaxy);
 galaxyRenderer.addToScene(scene, material);
 
 // UI
+const uiCallback = (value: number) => {
+  galaxy.regenerate();
+  galaxyRenderer.addToScene(scene, material);
+}
+
 const renderSettingsFolder = ui.addFolder("Render Settings");
 const bloomSettingsFolder = renderSettingsFolder.addFolder("Bloom Settings");
 bloomSettingsFolder.add(DefaultBloomSettings, "threshold", 0, 1).name("Threshold").onChange((value) => {
@@ -135,22 +140,20 @@ bloomSettingsFolder.add(DefaultBloomSettings, "radius", 0, 1).name("Radius").onC
   renderer.updateBloom({ radius: value });
 });
 const galaxyGenerationSettingsFolder = ui.addFolder("Galaxy Settings");
-galaxyGenerationSettingsFolder.add(galaxySettings, "numberOfStars", 1, 10000).name("Number Of Stars").onChange((_value) => {
-  galaxy.regenerate();
-  galaxyRenderer.addToScene(scene, material);
-});
-galaxyGenerationSettingsFolder.add(galaxySettings, "coreDistanceX", 1, 100).name("Core Size X").onChange((_value) => {
-  galaxy.regenerate();
-  galaxyRenderer.addToScene(scene, material);
-});
-galaxyGenerationSettingsFolder.add(galaxySettings, "coreDistanceY", 1, 100).name("Core Size Y").onChange((_value) => {
-  galaxy.regenerate();
-  galaxyRenderer.addToScene(scene, material);
-});
-galaxyGenerationSettingsFolder.add(galaxySettings, "thickness", 1, 100).name("Galaxy Thickness").onChange((_value) => {
-  galaxy.regenerate();
-  galaxyRenderer.addToScene(scene, material);
-});
+const coreGenerationSettings = galaxyGenerationSettingsFolder.addFolder("Core");
+coreGenerationSettings.add(galaxySettings, "numberOfStars", 1, 10000).name("Number Of Stars").onChange(uiCallback);
+coreGenerationSettings.add(galaxySettings, "coreDistanceX", 1, 100).name("Core Size X").onChange(uiCallback);
+coreGenerationSettings.add(galaxySettings, "coreDistanceY", 1, 100).name("Core Size Y").onChange(uiCallback);
+coreGenerationSettings.add(galaxySettings, "thickness", 1, 100).name("Galaxy Thickness").onChange(uiCallback);
+const armGenerationSettings = galaxyGenerationSettingsFolder.addFolder("Arms");
+armGenerationSettings.add(galaxySettings, "numberOfArms", 0, 10, 1).name("Number of Arms").onChange(uiCallback);
+armGenerationSettings.add(galaxySettings, "ratioOfStarsInArms", 0, 100).name("Proportion of stars in arms").onChange(uiCallback);
+armGenerationSettings.add(galaxySettings, "armDistanceX", 1, 100).name("Arm Distance X").onChange(uiCallback);
+armGenerationSettings.add(galaxySettings, "armDistanceY", 1, 100).name("Arm Distance Y").onChange(uiCallback);
+armGenerationSettings.add(galaxySettings, "armMeanX", 0, 100).name("Arm Center X").onChange(uiCallback);
+armGenerationSettings.add(galaxySettings, "armMeanY", 0, 100).name("Arm Center Y").onChange(uiCallback);
+armGenerationSettings.add(galaxySettings, "spiral", 0, 20).name("Spiral Factor").onChange(uiCallback);
+armGenerationSettings.add(galaxySettings, "swirlRadiusMin", 1, 1000).name("Min Swirl Radius").onChange(uiCallback);
 
 // Render loop
 function renderLoop(time: number) {

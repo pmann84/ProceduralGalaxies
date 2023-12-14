@@ -37,8 +37,9 @@ export class Galaxy {
       const stars: Star[] = [];
       if (this.settings.numberOfArms > 0) {
         const numberOfStarsInArms = this.settings.numberOfStars * (this.settings.ratioOfStarsInArms / 100);
+        const numberOfStarsPerArm = numberOfStarsInArms / this.settings.numberOfArms;
         for (let arm = 0; arm < this.settings.numberOfArms; arm++) {
-          for (let i = 0; i < numberOfStarsInArms; i++) {
+          for (let i = 0; i < numberOfStarsPerArm; i++) {
             const pos = spiral(Random.Gaussian3d(xDistProps, yDistProps, zDistProps), i * 2 * Math.PI / this.settings.numberOfArms, this.settings.armDistanceX, this.settings.spiral);
             const star = new Star(pos.x, pos.y, pos.z, StarFactory.generate());
             stars.push(star);
