@@ -6,6 +6,9 @@ export interface GalaxySettings {
     coreDistanceX: number;
     coreDistanceY: number;
     thickness: number;
+    ratioOfStarsInArms: number;
+    numberOfArms: number;
+    swirlRadiusMin: number;
 }
 
 export class Galaxy {

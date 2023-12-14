@@ -32,7 +32,7 @@ class StarSprite {
   private generateSprite(material: THREE.SpriteMaterial): THREE.Sprite {
     const sprite = new THREE.Sprite(material);
     // TODO: make sure this is correct
-    const size = this.star.info.radius / 5;
+    const size = ((this.star.info.radius * 2) + 1) / 5;
     sprite.scale.set(size, size, size);
     sprite.position.set(this.star.x, this.star.y, this.star.z);
     return sprite;
@@ -107,7 +107,10 @@ const galaxySettings: GalaxySettings = {
   numberOfStars: 10000,
   coreDistanceX: 20,
   coreDistanceY: 20,
-  thickness: 5
+  thickness: 5,
+  ratioOfStarsInArms: 0,
+  numberOfArms: 0,
+  swirlRadiusMin: 0
 }
 
 const galaxy = new Galaxy(galaxySettings);
@@ -116,29 +119,30 @@ galaxyRenderer.addToScene(scene, material);
 
 // UI
 const renderSettingsFolder = ui.addFolder("Render Settings");
-renderSettingsFolder.add(DefaultBloomSettings, "threshold", 0, 1).onChange((value) => {
+const bloomSettingsFolder = renderSettingsFolder.addFolder("Bloom Settings");
+bloomSettingsFolder.add(DefaultBloomSettings, "threshold", 0, 1).name("Threshold").onChange((value) => {
   renderer.updateBloom({ threshold: value });
 });
-renderSettingsFolder.add(DefaultBloomSettings, "strength", 0, 1).onChange((value) => {
+bloomSettingsFolder.add(DefaultBloomSettings, "strength", 0, 1).name("Strength").onChange((value) => {
   renderer.updateBloom({ strength: value });
 });
-renderSettingsFolder.add(DefaultBloomSettings, "radius", 0, 1).onChange((value) => {
+bloomSettingsFolder.add(DefaultBloomSettings, "radius", 0, 1).name("Radius").onChange((value) => {
   renderer.updateBloom({ radius: value });
 });
 const galaxyGenerationSettingsFolder = ui.addFolder("Galaxy Settings");
-galaxyGenerationSettingsFolder.add(galaxySettings, "numberOfStars", 1, 10000).onChange((_value) => {
+galaxyGenerationSettingsFolder.add(galaxySettings, "numberOfStars", 1, 10000).name("Number Of Stars").onChange((_value) => {
   galaxy.regenerate();
   galaxyRenderer.addToScene(scene, material);
 });
-galaxyGenerationSettingsFolder.add(galaxySettings, "coreDistanceX", 1, 100).onChange((_value) => {
+galaxyGenerationSettingsFolder.add(galaxySettings, "coreDistanceX", 1, 100).name("Core Size X").onChange((_value) => {
   galaxy.regenerate();
   galaxyRenderer.addToScene(scene, material);
 });
-galaxyGenerationSettingsFolder.add(galaxySettings, "coreDistanceY", 1, 100).onChange((_value) => {
+galaxyGenerationSettingsFolder.add(galaxySettings, "coreDistanceY", 1, 100).name("Core Size Y").onChange((_value) => {
   galaxy.regenerate();
   galaxyRenderer.addToScene(scene, material);
 });
-galaxyGenerationSettingsFolder.add(galaxySettings, "thickness", 1, 100).onChange((_value) => {
+galaxyGenerationSettingsFolder.add(galaxySettings, "thickness", 1, 100).name("Galaxy Thickness").onChange((_value) => {
   galaxy.regenerate();
   galaxyRenderer.addToScene(scene, material);
 });
