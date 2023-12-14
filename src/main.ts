@@ -105,12 +105,17 @@ window.addEventListener("resize", () => {
 // Setup
 const galaxySettings: GalaxySettings = {
   numberOfStars: 10000,
-  coreDistanceX: 20,
-  coreDistanceY: 20,
+  coreDistanceX: 33,
+  coreDistanceY: 33,
   thickness: 5,
-  ratioOfStarsInArms: 0,
-  numberOfArms: 0,
-  swirlRadiusMin: 0
+  ratioOfStarsInArms: 30,
+  numberOfArms: 2,
+  swirlRadiusMin: 0,
+  armDistanceX: 100, 
+  armDistanceY: 50,
+  armMeanX: 200, // arm center
+  armMeanY: 100,
+  spiral: 3
 }
 
 const galaxy = new Galaxy(galaxySettings);
