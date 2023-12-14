@@ -1,9 +1,9 @@
 import * as THREE from 'three';
 import { addElementsToBody, getWindowSize } from './window';
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
-import Stats from 'three/examples/jsm/libs/stats.module';
+import Stats from 'three/examples/jsm/libs/stats.module.js';
 import { Camera } from './camera';
-import { DefaultBloomSettings, Renderer } from './Renderer';
+import { DefaultBloomSettings, Renderer } from './renderer';
 import GUI from 'three/examples/jsm/libs/lil-gui.module.min.js';
 import { Galaxy, GalaxySettings } from './galaxy';
 import { Star, StarType, StellarClassification, StellarClassifications } from './star';
@@ -62,7 +62,7 @@ class GalaxyRenderer {
     })
   }
 
-  public addToScene(scene: THREE.Scene, material: THREE.SpriteMaterial): void {
+  public addToScene(scene: THREE.Scene, _material: THREE.SpriteMaterial): void {
     scene.clear();
     this.galaxy.stars.forEach(star => {
       const starSprite = new StarSprite(star, materialMap.get(star.info.classification)!);
@@ -126,19 +126,19 @@ renderSettingsFolder.add(DefaultBloomSettings, "radius", 0, 1).onChange((value) 
   renderer.updateBloom({ radius: value });
 });
 const galaxyGenerationSettingsFolder = ui.addFolder("Galaxy Settings");
-galaxyGenerationSettingsFolder.add(galaxySettings, "numberOfStars", 1, 10000).onChange((value) => {
+galaxyGenerationSettingsFolder.add(galaxySettings, "numberOfStars", 1, 10000).onChange((_value) => {
   galaxy.regenerate();
   galaxyRenderer.addToScene(scene, material);
 });
-galaxyGenerationSettingsFolder.add(galaxySettings, "coreDistanceX", 1, 100).onChange((value) => {
+galaxyGenerationSettingsFolder.add(galaxySettings, "coreDistanceX", 1, 100).onChange((_value) => {
   galaxy.regenerate();
   galaxyRenderer.addToScene(scene, material);
 });
-galaxyGenerationSettingsFolder.add(galaxySettings, "coreDistanceY", 1, 100).onChange((value) => {
+galaxyGenerationSettingsFolder.add(galaxySettings, "coreDistanceY", 1, 100).onChange((_value) => {
   galaxy.regenerate();
   galaxyRenderer.addToScene(scene, material);
 });
-galaxyGenerationSettingsFolder.add(galaxySettings, "thickness", 1, 100).onChange((value) => {
+galaxyGenerationSettingsFolder.add(galaxySettings, "thickness", 1, 100).onChange((_value) => {
   galaxy.regenerate();
   galaxyRenderer.addToScene(scene, material);
 });
