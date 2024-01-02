@@ -27,6 +27,13 @@ export class Random {
         )
     }
 
+    public static HalfGaussian({ mean, stdev }: GaussianProps = DefaultGaussianProps): number {
+        const u = 1.0 - Math.random();
+        const v = Math.random();
+        const z = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+        return Math.abs(z * stdev + mean);
+    }
+
     public static InRange(min: number, max: number) {
         return Math.random() * (max - min) + min;
     }

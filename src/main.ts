@@ -10,9 +10,9 @@ import { Star, StarType, StellarClassification, StellarClassifications } from '.
 
 // TODO: Sort out the bloom
 // TODO: Adjust scale depending on camera position
-// TODO: Add colour variation to stars
-// TODO: Add spiral arms
 // TODO: Add dust clouds
+// TODO: Add hover overlay
+// TODO: This doesnt handle elliptic galaxies with arms well, since the arms are spread around a circle
 
 const generateMaterialMap = () => {
   const spriteTexture = loadTexture('./circle120.png');
@@ -110,12 +110,9 @@ const galaxySettings: GalaxySettings = {
   thickness: 5,
   ratioOfStarsInArms: 30,
   numberOfArms: 2,
-  swirlRadiusMin: 0,
-  armDistanceX: 100, 
-  armDistanceY: 50,
-  armMeanX: 200, // arm center
-  armMeanY: 100,
-  spiral: 3
+  armWidth: 40,
+  armLength: 70,
+  spiral: 2
 }
 
 const galaxy = new Galaxy(galaxySettings);
@@ -123,7 +120,7 @@ const galaxyRenderer = new GalaxyRenderer(galaxy);
 galaxyRenderer.addToScene(scene, material);
 
 // UI
-const uiCallback = (value: number) => {
+const uiCallback = (_value: number) => {
   galaxy.regenerate();
   galaxyRenderer.addToScene(scene, material);
 }
@@ -148,12 +145,9 @@ coreGenerationSettings.add(galaxySettings, "thickness", 1, 100).name("Galaxy Thi
 const armGenerationSettings = galaxyGenerationSettingsFolder.addFolder("Arms");
 armGenerationSettings.add(galaxySettings, "numberOfArms", 0, 10, 1).name("Number of Arms").onChange(uiCallback);
 armGenerationSettings.add(galaxySettings, "ratioOfStarsInArms", 0, 100).name("Proportion of stars in arms").onChange(uiCallback);
-armGenerationSettings.add(galaxySettings, "armDistanceX", 1, 100).name("Arm Distance X").onChange(uiCallback);
-armGenerationSettings.add(galaxySettings, "armDistanceY", 1, 100).name("Arm Distance Y").onChange(uiCallback);
-armGenerationSettings.add(galaxySettings, "armMeanX", 0, 100).name("Arm Center X").onChange(uiCallback);
-armGenerationSettings.add(galaxySettings, "armMeanY", 0, 100).name("Arm Center Y").onChange(uiCallback);
-armGenerationSettings.add(galaxySettings, "spiral", 0, 20).name("Spiral Factor").onChange(uiCallback);
-armGenerationSettings.add(galaxySettings, "swirlRadiusMin", 1, 1000).name("Min Swirl Radius").onChange(uiCallback);
+armGenerationSettings.add(galaxySettings, "armWidth", 1, 50, 0.1).name("Arm Width").onChange(uiCallback);
+armGenerationSettings.add(galaxySettings, "armLength", 0, 100).name("Arm Length").onChange(uiCallback);
+armGenerationSettings.add(galaxySettings, "spiral", 0, 2, 0.01).name("Spiral Factor").onChange(uiCallback);
 
 // Render loop
 function renderLoop(time: number) {
