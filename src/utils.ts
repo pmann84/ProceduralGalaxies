@@ -4,7 +4,7 @@ export function clamp(value: number, min: number, max: number): number {
     return Math.min(max, Math.max(min, value));
 }
 
-export function rotate(position: THREE.Vector3, semiMajorAxisX: number, semiMajorAxisY: number, angle: number) {
+export function rotate(position: THREE.Vector3, _semiMajorAxisX: number, _semiMajorAxisY: number, angle: number) {
     let { x, y, z } = position;
     let theta = angle;
     theta += x > 0 ? Math.atan(y/x) : Math.atan(y/x) + Math.PI;
